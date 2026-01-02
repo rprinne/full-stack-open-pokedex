@@ -48,7 +48,7 @@ jobs:
           DEFAULT_BUMP: patch
           TAG_PREFIX: v
   discord_webhook:
-    # Testattu että toimii otetaan nyt pois käytöstö
+    # Testattu että toimii otetaan nyt pois käytöstä
     if: ${{ false && github.event_name == 'push' }}
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
