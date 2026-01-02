@@ -41,7 +41,7 @@ jobs:
           severity: info
           details: A new version of Pokedex deployed
       - name: Webhook Deployment failed
-        uses: rjstone/discord-webhook-notify@vc2597273488aeda841dd1e891321952b51f7996f
+        uses: rjstone/discord-webhook-notify@c2597273488aeda841dd1e891321952b51f7996f
         if: ${{ !success() }}
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
