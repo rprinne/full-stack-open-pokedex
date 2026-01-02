@@ -6,7 +6,6 @@ on:
 
 jobs:
   health_check:
-    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
       - name: Check the deployed service URL
