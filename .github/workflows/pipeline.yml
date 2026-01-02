@@ -67,7 +67,7 @@ jobs:
         with:
           args: 'Deployment failed of {{ EVENT_PAYLOAD.repository.full_name }}'
   health_check:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' && success() }}
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
     steps:
