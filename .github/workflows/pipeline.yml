@@ -33,10 +33,22 @@ jobs:
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' }}
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      - name: Webhook Deployment success
+        uses: rjstone/discord-webhook-notify@c2597273488aeda841dd1e891321952b51f7996f
+        if: ${{ success() }}
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          severity: info
+          details: A new version of Pokedex deployed
+      - name: Webhook Deployment failed
+        uses: rjstone/discord-webhook-notify@c2597273488aeda841dd1e891321952b51f7996f
+        if: ${{ !success() }}
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          severity: info
+          details: Build failed
   tag_release:
-    if: >
-      github.event_name == 'push' &&
-      !contains(join(github.event.commits.*.message, ''), '#skip')
+    if: ${{ github.event_name == 'push' && contains(join(github.event.commits.*.message, ''), '#skip') }}
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
     permissions:
@@ -44,7 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.75.0
+        uses: anothrNick/github-tag-action@4ed44965e0db8dab2b466a16da04aec3cc312fd8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
