@@ -16,14 +16,14 @@ jobs:
           retry-delay: 5s # Optional, only applicable to max-attempts > 1
           # Retry all errors, including 404. This option might trigger curl upgrade.
       - name: Health check ok
-        if: ${{ success() }}
+        if: ${{ false && success() }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@0.4.0
         with:
           args: 'Ping ok: https://full-stack-open-pokedex-dtbk.onrender.com/health'
       - name: Health check not ok
-        if: ${{ failure() }}
+        if: ${{ false && failure() }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@0.4.0
