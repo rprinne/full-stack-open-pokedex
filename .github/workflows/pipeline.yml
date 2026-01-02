@@ -34,7 +34,7 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
   tag_release:
-    if: ${{ github.event_name == 'push' && contains(join(github.event.commits.*.message, ''), '#skip') }}
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ''), '#skip') }}
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
     permissions:
@@ -53,14 +53,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deployment success
-        uses: rjstone/discord-webhook-notify@c2597273488aeda841dd1e891321952b51f7996f
+        uses: rjstone/discord-webhook-notify@v2
         if: ${{ success() }}
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           severity: info
           details: A new version of Pokedex deployed
       - name: Deployment failed
-        uses: rjstone/discord-webhook-notify@c2597273488aeda841dd1e891321952b51f7996f
+        uses: rjstone/discord-webhook-notify@v2
         if: ${{ failure() }}
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
