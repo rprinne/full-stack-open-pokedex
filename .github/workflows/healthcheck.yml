@@ -1,4 +1,4 @@
-name: Deployment pipeline
+name: URL health check
 
 on:
   schedule:
